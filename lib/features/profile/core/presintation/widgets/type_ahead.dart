@@ -1,0 +1,115 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+
+class TypeAhead extends StatelessWidget {
+  String hintText;
+  List<String> items;
+  TextEditingController text;
+  Function(Object) onChange;
+  String? errorText;
+  double? height;
+  double? width;
+  String title;
+  Color titleColor;
+  double fontSizeForTitle;
+
+  TypeAhead(
+      {required this.onChange,
+      required this.title,
+      required this.fontSizeForTitle,
+      required this.titleColor,
+      required this.errorText,
+      required this.hintText,
+      required this.items,
+      required this.text,
+      this.width,
+      this.height,
+      Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title.toString(),
+          style: TextStyle(color: titleColor, fontSize: fontSizeForTitle),
+        ),
+        SizedBox(height: 15.h),
+        Stack(
+          textDirection: TextDirection.ltr,
+          children: <Widget>[
+            Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: const Offset(0, 0), // changes position of shadow
+                  ),
+                ],
+                borderRadius: const BorderRadius.all(Radius.circular(25)),
+              ),
+            ),
+            SizedBox(
+              height: height,
+              width: width,
+              child: Padding(
+                padding: EdgeInsets.only(left: 25.w),
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                      controller: text,
+                      // onSubmitted: (value) {
+                      //   text.text = value;
+                      //   onChange(text.text);
+                      // },
+                      decoration: InputDecoration(
+                        hintText: hintText,
+                        errorText: errorText,
+                        hintStyle: TextStyle(
+                            color: const Color(0xff9d9d9d), fontSize: 14.sp),
+                        border: InputBorder.none,
+                      )),
+                  suggestionsCallback: (pattern) {
+                    if (pattern.isNotEmpty) {
+                        List<String> suggestions = [];
+                        for (int i = 0; i < items.length; i++) {
+                          if(pattern.toString().toLowerCase() == items[i].toLowerCase().substring(0,pattern.length)){
+                            suggestions.add(items[i]);
+                          }
+                        }
+                        return suggestions;
+                    } else {
+                      return items;
+                    }
+                  },
+                  itemBuilder: (context, String? suggestion) {
+                    return ListTile(
+                      title: Text(suggestion!),
+                    );
+                  },
+                  hideSuggestionsOnKeyboardHide: false,
+                  hideOnEmpty: true,
+                  onSuggestionSelected: (suggestion) {
+                    text.text = suggestion.toString();
+                    onChange(text.text);
+                  },
+                  suggestionsBoxDecoration: const SuggestionsBoxDecoration(elevation: 0.0),
+                  transitionBuilder: (context, suggestionsBox, controller) {
+                    return suggestionsBox;
+                  },
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}

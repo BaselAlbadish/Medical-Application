@@ -1,0 +1,168 @@
+update_color_here is tha main note
+
+IMPORTANT
+------------------------------------------------------------------------------------------
+* start with implementing remote datasource because you are not going to cache everything.
+------------------------------------------------------------------------------------------
+
+
+
+
+
+entities
+-----------
++ location  {
+	countryName
+	countryCode
+	stateName
+	city
+}
+
++ individual  {
+	firsName
+	lastName
+
+	phoneNumber
+	realPhoneNumber
+	username 
+	password 
+	email 
+	addressId
+
+	primaryProfession
+	universityName
+	degreeName
+	startDate
+	endDate
+	minorName
+	majorName
+}
+
++ organization {
+	organizationName
+
+	phoneNumber
+	realPhoneNumber
+	userName
+	passWord
+	email
+	addressId
+}
+
++ Minor {
+	name
+}
+
++ Major {
+	name
+}
+
++ UniversityDegree {
+	name
+}
+
++ University {
+	name
+}
+
++ PrimaryProfession {
+	name
+}
+
++ Company {
+	name
+}
+
++ Position {
+	name
+}
+
++ PrimaryBusiness {
+	name
+}
+
+usecases: 
+
+
+maybe: SignUpBloc contains individual
+
+-----------
+BasicInfoBloc >> {{stores: firstName, lastName, primaryLocation, primaryProfession}}
+++++
+getLocations	=> List of Location
+getAllPrimaryProfessions()	=> List of Primary Professions		
+++++
+
+ContactInfoBloc >> {{stores: mobile number, password, passwordConfirmaiton}}
+++++
+createEmail(firstName, lastName) => GeneratedEmail[email, username]
+++++
+
+StudentFinalBloc >> {{universityName, degree, minor, major, startMonthDate, endMonthDate, startYear, endYear}}
+++++
+getAllUniversities() => List of Universities									
+getAllMinors()	=> List of Minors														
+getAllMajors()	=> List of Majors 													
+++++
+
+ProfessionFinalBloc >> {{companyName, position, location,startMontheData, endMonthDate, startYear, endYear , stillWorking,}}
+++++
+getAllPositions() 	=> List of Positions											
+++++
+
+
+getDegreeForSpecificUniversity(int) => List of degrees				
+sendCodeVerificationToMobile(phoneNumber) => void
+verifyPhoneNumberByCode(phoneNumber, code) => void
+
+signUpIndividual(Individual) => void
+
+
+
+==============
+
+getLocations	=> List of Location
+getAllPrimaryBuisinesses	=> List of Primary Buisenesses			
+getAllCompanies() 	=> List of Companies											
+confirmEmailByCode(hashCode, code) =>	void 
+sendCodeToEmail(email) => EmailHashCode[String]
+
+signUpOrganization(Org) => void
+
+
+
+
+== after sign up 
+// uploadImageMobile(Image) => void (not related to auth)
+// extractContactsFromMobile
+// getRecommendedPeople
+
+
+
+
+
+
+questions: 
+-----------
+* what does code in confirm email code mobile mean? 
+maybe code will be in the email address, hash code will be retreived from send code in email api.
+
+* how to store user token after sign up? 
+you can use flutter_secure_storage.
+
+* what does solve duplicate number api do?
+
+* what does getAllPositions() do?
+
+
+
+
+Form -> Column -> TextFormField and buttons
+
+
+
+
+
+
+
+
